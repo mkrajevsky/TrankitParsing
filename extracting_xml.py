@@ -75,7 +75,6 @@ def read_xml(dir_path: str) -> list[dict]:
     :return: dict
     """
     sent_list = []
-    # for filename in os.listdir(dir_path):
     files = os.listdir(dir_path)
     if {'header.xml', 'text_structure.xml'}.issubset(files):
         with open(dir_path + '/' + 'header.xml', 'r') as h:
@@ -97,22 +96,7 @@ def read_xml(dir_path: str) -> list[dict]:
                                                filename=file_name,
                                                genre=genre)]
 
-        # if re.match(r'(header\.xml)$', filename):
-        #     with open(dir_path+'/'+filename, 'r') as h:
-        #         for line in h.readlines():
-        #             if re.match("target=.*>/", line):
-        #                 global genre
-        #                 genre = re.findall('".*"', line)[0][1:-1]
 
-        # elif re.match('text_structure\.xml', filename):
-        #     text_pattern = re.compile('^(<p xml).*(</p>)$')
-        #     with open(dir_path+'/'+filename, 'r') as f:
-        #         for line in f.readlines():
-        #             if re.match(text_pattern, line):
-        #                 file_name = dir_path.split("/")[-1]
-        #                 sent_list += [extract_sent(text=line,
-        #                                            filename=file_name,
-        #                                            genre=genre)]
 
     return sent_list
 
@@ -125,7 +109,6 @@ def xml_to_csv(src_path, dest_path):
     """
     df = pd.DataFrame(columns=sentences_header)
     print(df.columns)
-    # df = pd.DataFrame()
     with open(dest_path, "w") as csv:
         for path in list(flatten(src_path)):
             for row in read_xml(path):
@@ -133,7 +116,6 @@ def xml_to_csv(src_path, dest_path):
                 if row:
                     df = df._append(row[0], ignore_index=True)
                     df.reset_index()
-            # df.loc[len(df)] = row
         df.to_csv(csv)
 
 
@@ -142,4 +124,5 @@ xml_to_csv("/Users/michalek/Downloads/NKJP_300M_sample",
 print(sent_seg("Brak mi już sił na ul. Sonaty, dr. hab. nie wyleczył mnie."))
 
 e = perf_counter()
+
 print(e-s)
